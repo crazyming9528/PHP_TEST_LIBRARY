@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Title</title>
+    <script src="jquery.min.js"></script>
+    <style>
+
+        #wrapper {
+            text-align: center;
+        }
+
+        #text_box {
+            width: 80%;
+
+        }
+
+        #submit {
+            width: 80%;
+            height: 80px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="wrapper">
+    <textarea id="text_box" rows="5"></textarea>
+    <button id="submit">提交</button>
+</div>
+
+
+<script>
+    var Global = {
+        queryString: function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            } else {
+                return null;
+            }
+        }
+
+    };
+
+
+    document.getElementById("submit").addEventListener("click", function () {
+        console.log('sss');
+
+        var value = document.querySelector('#text_box').value;
+
+        if (!value) {
+            alert("不能为空");
+            return
+        }
+        $.post("http://i.crazyming.cn/index.php/sync", {
+            channel: Global.queryString('channel') || 'default',
+            type: "url",
+            content: document.querySelector('#text_box').value,
+            remark: ''
+        }, function (res) {
+            console.log(res);
+            alert("保存成功");
+
+        });
+    })
+</script>
+
+</body>
+</html>
